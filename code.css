@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <sstream>
+
+std::unordered_map<std::string, std::string> stringVariables; // Store string variable names and values
+std::unordered_map<std::string, double> numericVariables;     // Store numeric variable names and values
+
+// Function to evaluate expressions
+double evaluateExpression(const std::string& expression) {
+    // Check if the expression is a numeric variable
+    if (numericVariables.find(expression) != numericVariables.end()) {
+        return numericVariables[expression];
+    }
+    
+    // Check if the expression is a string variable
+    if (stringVariables.find(expression) != stringVariables.end()) {
+        std::cerr << "Error: Variable '" << expression << "' is not numeric" << std::endl;
+        return 0.0; // Handle non-numeric variable
+    }
+    
+    // Handle other cases or expressions here
+    std::cerr << "Error: Variable or expression '" << expression << "' not found" << std::endl;
+    return 0.0; // Handle variable not found
+}
+
+// Function to set numeric variables
+void var(const std::string& variableName, double value) {
+    numericVariables[variableName] = value;
+}
+
+// Function to set string variables
+void var(const std::string& variableName, const std::string& value) {
+    stringVariables[variableName] = value;
+}
+
+// Function to implement the "print()" function for numeric variables
+void print(const std::string& variableName) {
+    if (numericVariables.find(variableName) != numericVariables.end()) {
+        // Use the "print()" function to display the variable's name and value
+        std::ostringstream output;
+        output << variableName << " = " << numericVariables[variableName];
+        std::cout << output.str() << std::endl;
+    } else if (stringVariables.find(variableName) != stringVariables.end()) {
+        // Use the "print()" function to display the string variable's name and value
+        std::ostringstream output;
+        output << variableName << " = \"" << stringVariables[variableName] << "\"";
+        std::cout << output.str() << std::endl;
+    } else {
+        std::cerr << "Error: Variable '" << variableName << "' not found" << std::endl;
+    }
+}
+
+int main() {
+    // Example usage
+    
+    // Set numeric variables using "var" syntax
+    var("x", 5.0);
+    
+    // Set string variables using "var" syntax
+    var("name", "John");
+    
+    // Call the "print" function to print variable values
+    print("x");
+    print("name");
+    
+    return 0;
+}
